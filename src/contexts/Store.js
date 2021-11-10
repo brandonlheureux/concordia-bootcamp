@@ -70,6 +70,8 @@ export const StoreProvider = ({ children }) => {
   // on app start
   useEffect(() => {
     loadInitialArticles();
+
+    // eslint-disable-next-line
   }, []);
 
   return (

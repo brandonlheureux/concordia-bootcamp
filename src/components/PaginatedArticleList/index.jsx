@@ -3,8 +3,8 @@ import { useStore } from "../../contexts/Store";
 import ArticleCard from "../ArticleCard";
 import { ArticleList, LoadMoreWrapper, Button } from "./styled-components";
 
-const Articles = () => {
-  const { articles, loadMoreArticles, featuredArticle } = useStore();
+const PaginatedArticleList = () => {
+  const { articles, loadMoreArticles } = useStore();
 
   const handleClick = () => {
     loadMoreArticles();
@@ -13,17 +13,9 @@ const Articles = () => {
   return (
     <>
       <ArticleList>
-        {featuredArticle && (
-          <ArticleCard
-            {...{
-              title: featuredArticle.fields.title,
-              category: featuredArticle.fields.category,
-            }}
-          />
-        )}
         {articles.map((article) => {
           const {
-            fields: { author, category, content, date, featured, title },
+            fields: { category, title },
             sys: { id },
           } = article;
           return <ArticleCard key={id} {...{ title, category }} />;
@@ -38,4 +30,4 @@ const Articles = () => {
   );
 };
 
-export default Articles;
+export default PaginatedArticleList;

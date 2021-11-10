@@ -7,7 +7,6 @@ export const ArticleList = styled.div`
   gap: 30px;
   width: 100%;
   padding: 30px;
-  background-color: wheat;
 
   @media (max-width: 740px) {
     flex-flow: column;

@@ -1,33 +1,33 @@
 import GlobalStyle from "./base-styles";
 
+import { useStore } from "./contexts/Store";
+
 import Container from "./components/Container";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import styled from "styled-components";
-import Articles from "./components/Articles";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PaginatedArticleList from "./components/PaginatedArticleList";
+import FeaturedArticle from "./components/FeaturedArticle";
 
 function App() {
+  const { featuredArticle } = useStore();
+
   return (
     <>
       <GlobalStyle />
       <Main className="App">
-        {/* <Router> */}
         <Header />
 
         {/* TODO: Blog things goes here. Use the components folder! */}
         <Expand>
           <Container style={{ minHeight: "100%" }}>
-            {/* <FeaturedArticle /> */}
-            {/* <Routes>
-                <Route path="/page/:pageNumber" element={} />
-              </Routes> */}
-            <Articles />
+            <Title>Blog</Title>
+            {featuredArticle && <FeaturedArticle article={featuredArticle} />}
+            <PaginatedArticleList />
           </Container>
         </Expand>
 
         <Footer />
-        {/* </Router> */}
       </Main>
     </>
   );
@@ -46,4 +46,9 @@ const Main = styled.main`
   height: 100vh;
   display: flex;
   flex-direction: column;
+`;
+
+const Title = styled.h1`
+  margin: 10px 0;
+  font-size: 60px;
 `;
