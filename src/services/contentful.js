@@ -10,7 +10,10 @@ export const getAllArticles = async (limit = 6, origin = 0) => {
       GET,
       CONTENTFUL_URL +
         "&" +
-        new URLSearchParams({ limit: limit, skip: origin  })
+        new URLSearchParams({
+          limit: limit,
+          skip: origin,
+        })
     );
 
     return response.items;
@@ -22,8 +25,31 @@ export const getAllArticles = async (limit = 6, origin = 0) => {
 // TODO: Using the category argument, update the method below by making a GET
 //       request and returning entries from contentful filtered by the category.
 //       NOTE: this method will need to be connected to ../contexts/Store!
-export const getArticlesByCategory = async (category) => {
-  return [];
+
+// since this is in the contenful file, i'm assuming we want to use the category argument
+// as a query param, while maintaining pagination.
+
+export const getArticlesByCategory = async (
+  limit = 6,
+  origin = 0,
+  category = "all"
+) => {
+  try {
+    const response = await request(
+      GET,
+      CONTENTFUL_URL +
+        "&" +
+        new URLSearchParams({
+          limit: limit,
+          skip: origin,
+          "fields.category": category,
+        })
+    );
+
+    return response.items;
+  } catch (e) {
+    console.log("getArticlesByCategory failed:", e);
+  }
 };
 
 // Possibly useful documentation:

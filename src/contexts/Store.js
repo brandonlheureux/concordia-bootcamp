@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getAllArticles } from "../services/contentful";
+import { getAllArticles, getArticlesByCategory } from "../services/contentful";
 
 export const StoreContext = React.createContext();
 
 export const StoreProvider = ({ children }) => {
   const [featuredArticle, setFeaturedArticle] = useState(null);
   const [articles, setArticles] = useState([]);
+  const [category, setCategory] = useState("all");
+
 
   // ---- ---- ---- Functions
 
@@ -26,26 +28,22 @@ export const StoreProvider = ({ children }) => {
     return latestFeatured;
   };
 
-  // initial loader
-  const loadInitialArticles = async () => {
-    const allArticles = await getAllArticles();
-    const featured = getFeaturedFrom(allArticles);
-    if (featured) {
-      setFeaturedArticle(featured);
-      setArticles(
-        allArticles.filter((article) => article.sys.id !== featured.sys.id)
+  // load more articles, checking for featured if it wasnt already set
+  // category aware
+  const loadMoreArticles = async () => {
+    let newArticles;
+    if (category === "all") {
+      newArticles = await getAllArticles(
+        6,
+        articles.length + !!featuredArticle
       );
     } else {
-      setArticles(allArticles);
+      newArticles = await getArticlesByCategory(
+        6,
+        articles.length + !!featuredArticle,
+        category
+      );
     }
-  };
-
-  // load more articles, checking for featured if it wasn already set
-  const loadMoreArticles = async () => {
-    const newArticles = await getAllArticles(
-      6,
-      articles.length + !!featuredArticle
-    );
 
     // if no featured, attempt to find one
     if (!featuredArticle) {
@@ -65,14 +63,55 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
-  // ---- ---- ---- Effects
+  // ---- ---- ---- Effects 
 
   // on app start
   useEffect(() => {
-    loadInitialArticles();
+    (async () => {
+      const allArticles = await getAllArticles();
+      const featured = getFeaturedFrom(allArticles);
+      if (featured) {
+        setFeaturedArticle(featured);
+        setArticles(
+          allArticles.filter((article) => article.sys.id !== featured.sys.id)
+        );
+      } else {
+        setArticles(allArticles);
+      }
+    })();
 
     // eslint-disable-next-line
   }, []);
+
+  // fetch new list based on selected category
+  useEffect(() => {
+    (async () => {
+      let newArticleList;
+      if (category === "all") {
+        newArticleList = await getAllArticles();
+      } else {
+        newArticleList = await getArticlesByCategory(6, 0, category);
+      }
+      if (!featuredArticle) {
+        const newFeatured = getFeaturedFrom(newArticleList);
+
+        // if found
+        if (newFeatured) {
+          setFeaturedArticle(newFeatured);
+          setArticles(
+            newArticleList.filter(
+              (article) => article.sys.id !== newFeatured.sys.id
+            )
+          );
+        } else {
+          setArticles(newArticleList);
+        }
+      } else {
+        setArticles(newArticleList);
+      }
+    })();
+    // eslint-disable-next-line
+  }, [category]);
 
   return (
     <StoreContext.Provider
@@ -80,6 +119,8 @@ export const StoreProvider = ({ children }) => {
         featuredArticle,
         articles,
         loadMoreArticles,
+        setCategory,
+        category,
       }}
     >
       {children}

@@ -40,6 +40,14 @@ export default App;
 
 const Expand = styled.div`
   flex-grow: 1;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 238, 230, 1) 15%,
+    rgba(255, 238, 230, 1) 85%,
+    rgba(254, 254, 254, 1) 100%
+  );
 `;
 
 const Main = styled.main`
