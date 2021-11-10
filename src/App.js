@@ -43,8 +43,8 @@ const Expand = styled.div`
   background: rgb(255, 255, 255);
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 238, 230, 1) 15%,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(255, 238, 230, 1) 30%,
     rgba(255, 238, 230, 1) 85%,
     rgba(254, 254, 254, 1) 100%
   );
