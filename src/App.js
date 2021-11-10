@@ -1,5 +1,4 @@
 import GlobalStyle from "./base-styles";
-import { useStore } from "./contexts/Store";
 
 import Container from "./components/Container";
 import Header from "./components/Header";
@@ -9,8 +8,6 @@ import Articles from "./components/Articles";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const store = useStore();
-
   return (
     <>
       <GlobalStyle />

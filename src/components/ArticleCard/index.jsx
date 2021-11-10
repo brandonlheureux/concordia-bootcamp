@@ -9,7 +9,7 @@ import {
   Center,
 } from "./styled-components";
 
-const Article = ({ title, category }) => {
+const ArticleCard = ({ title, category }) => {
   return (
     <ArticleContainer tabIndex="0" aria-label="Article">
       {/* wrappers to place elements, center to fill the space and center the title */}
@@ -21,7 +21,7 @@ const Article = ({ title, category }) => {
         />
       </ImageWrapper>
       <Center>
-        <Title tabIndex="0" aria-label="Article Title" >
+        <Title tabIndex="0" aria-label="Article Title">
           {title}
         </Title>
       </Center>
@@ -34,4 +34,4 @@ const Article = ({ title, category }) => {
   );
 };
 
-export default Article;
+export default ArticleCard;
