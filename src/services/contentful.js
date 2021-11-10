@@ -4,15 +4,19 @@ const CONTENTFUL_URL = `https://cdn.contentful.com/spaces/6fmuqje9nkz0/environme
 
 // TODO: Update the method below to utilize contentful's pagination functionality to return only 6 entries
 //       NOTE: remember on "load more" it's 6 *additional* entries
-export const getAllArticles = async () => {
+export const getAllArticles = async (limit = 25, origin = 0) => {
   try {
-    const response = await request(GET, CONTENTFUL_URL);
+    const response = await request(
+      GET,
+      CONTENTFUL_URL + "&" + new URLSearchParams({ limit: limit, skip: origin })
+    );
 
     return response.items;
   } catch (e) {
     console.log("getAllArticles failed:", e);
   }
 };
+
 
 // TODO: Using the category argument, update the method below by making a GET
 //       request and returning entries from contentful filtered by the category.
